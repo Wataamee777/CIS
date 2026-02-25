@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CID Viewer</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        textarea { width: 80%; height: 200px; }
+        canvas { border: 2px solid #333; margin-top: 20px; image-rendering: pixelated; width: 400px; }
+    </style>
+</head>
+<body>
+    <h2>.cid Viewer</h2>
+    <textarea id="i" placeholder="ここに.cidの内容をペースト"></textarea><br>
+    <button onclick="draw()">描画</button>
+    <button onclick="save()">PNG保存</button><br>
+    <canvas id="c"></canvas>
+<script>
+    function draw() {
+        const txt = document.getElementById('i').value;
+        const w = parseInt(txt.match(/WIDTH:\s*(\d+)/i)[1]);
+        const data = txt.split(/DATA:/i)[1].split(',');
+        const pix = [];
+        data.forEach(d => {
+            const [v, n] = d.trim().split('*').map(Number);
+            if(isNaN(v)) return;
+            for(let i=0; i<(n||1); i++) pix.push(v);
+        });
+        const cvs = document.getElementById('c'), ctx = cvs.getContext('2d');
+        cvs.width = w; cvs.height = Math.ceil(pix.length/w);
+        const img = ctx.createImageData(cvs.width, cvs.height);
+        pix.forEach((p, i) => {
+            img.data[i*4] = ((p>>11)&0x1F)*255/31;
+            img.data[i*4+1] = ((p>>5)&0x3F)*255/63;
+            img.data[i*4+2] = (p&0x1F)*255/31;
+            img.data[i*4+3] = 255;
+        });
+        ctx.putImageData(img, 0, 0);
+    }
+    function save() { const a = document.createElement('a'); a.href = document.getElementById('c').toDataURL(); a.download = 'cis_export.png'; a.click(); }
+</script>
+</body>
+</html>
