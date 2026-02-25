@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CIS Palette Tool</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #e0e0e0; }
+        .box { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        input[type="color"] { width: 150px; height: 150px; border: none; cursor: pointer; background: none; }
+        .code-display { margin-top: 20px; font-family: monospace; font-size: 1.5rem; background: #333; color: #0f0; padding: 15px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>CIS Color Picker</h2>
+        <input type="color" id="p" value="#ff0000">
+        <div>連続数: <input type="number" id="c" value="1" min="1" style="width:50px"></div>
+        <div class="code-display" id="out" title="クリックでコピー">63488,</div>
+        <p><small>クリックでクリップボードにコピー</small></p>
+    </div>
+<script>
+    const p = document.getElementById('p'), c = document.getElementById('c'), out = document.getElementById('out');
+    const update = () => {
+        const hex = p.value;
+        const r = parseInt(hex.substr(1,2),16), g = parseInt(hex.substr(3,2),16), b = parseInt(hex.substr(5,2),16);
+        const num = ((Math.floor(r*31/255)<<11)|(Math.floor(g*63/255)<<5)|Math.floor(b*31/255));
+        const res = c.value > 1 ? `${num}*${c.value},` : `${num},`;
+        out.innerText = res;
+    };
+    p.oninput = c.oninput = update;
+    out.onclick = () => { navigator.clipboard.writeText(out.innerText); alert("Copied!"); };
+</script>
+</body>
+</html>
