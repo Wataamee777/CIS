@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Image to CID Converter</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+        textarea { width: 100%; height: 300px; font-family: monospace; margin-top: 10px; }
+        .preview { max-width: 200px; display: block; margin: 10px 0; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h2>Image to .cid Converter</h2>
+    <input type="file" id="f" accept="image/*">
+    横幅(px): <input type="number" id="w" value="32">
+    <button onclick="conv()">変換実行</button>
+    <textarea id="res" placeholder="ここに.cidデータが出力されます"></textarea>
+<script>
+    async function conv() {
+        const file = document.getElementById('f').files[0];
+        if(!file) return;
+        const img = new Image(); img.src = URL.createObjectURL(file);
+        await img.decode();
+        const w = parseInt(document.getElementById('w').value);
+        const h = Math.floor(img.height * (w / img.width));
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const d = ctx.getImageData(0, 0, w, h).data;
+        let out = `TITLE: ${file.name}\nWIDTH: ${w}\nDATA: `, last = -1, count = 0;
+        for (let i=0; i<d.length; i+=4) {
+            const color = ((Math.floor(d[i]*31/255)<<11)|(Math.floor(d[i+1]*63/255)<<5)|Math.floor(d[i+2]*31/255));
+            if(color === last) { count++; } 
+            else { if(last !== -1) out += `${last}${count>1?'*'+count:''},`; last = color; count = 1; }
+        }
+        document.getElementById('res').value = out + `${last}${count>1?'*'+count:''}`;
+    }
+</script>
+</body>
+</html>
