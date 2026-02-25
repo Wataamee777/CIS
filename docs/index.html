@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIS (Color Image System) Portal</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        header { background: #1e293b; color: white; width: 100%; padding: 2rem 0; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
+        .subtitle { opacity: 0.8; font-size: 0.9rem; margin-top: 0.5rem; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 90%; max-width: 1000px; margin: 40px 0; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s; text-decoration: none; color: inherit; border: 1px solid #e2e8f0; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 15px rgba(37, 99, 235, 0.1); }
+        .icon { font-size: 3rem; margin-bottom: 1rem; }
+        .card h2 { margin: 0.5rem 0; color: var(--primary); }
+        .card p { font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+        footer { margin-top: auto; padding: 20px; font-size: 0.8rem; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CIS</h1>
+    <div class="subtitle">Color Image System - Text Based 16bit Image Format</div>
+</header>
+
+<div class="container">
+    <!-- パレットツール -->
+    <a href="palette.html" class="card">
+        <div class="icon">🎨</div>
+        <h2>Palette</h2>
+        <p>色をRGB565形式の数値に変換します。<br>連続したドットのカウントも可能です。</p>
+    </a>
+
+    <!-- コンバーター -->
+    <a href="convert.html" class="card">
+        <div class="icon">🔄</div>
+        <h2>Convert</h2>
+        <p>お手持ちの画像(PNG/JPG)を<br>独自の.cidテキスト形式へ変換します。</p>
+    </a>
+
+    <!-- ビューアー -->
+    <a href="viewer.html" class="card">
+        <div class="icon">🖼️</div>
+        <h2>Viewer</h2>
+        <p>.cidデータを読み込んで可視化します。<br>編集したデータの確認やPNG保存に。</p>
+    </a>
+</div>
+
+<div style="background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 940px; border: 1px dashed #cbd5e1;">
+    <h3>快速スタートガイド</h3>
+    <ol style="font-size: 0.9rem; color: #475569;">
+        <li><b>Convert</b> で写真をドット絵風のテキストデータにする</li>
+        <li>テキストをメモ帳などで編集する（色番号を変えるなど）</li>
+        <li><b>Viewer</b> に貼り付けて、どう変わったか確認する</li>
+        <li>新しい色を入れたいときは <b>Palette</b> で番号を調べる</li>
+    </ol>
+</div>
+
+<footer>
+    &copy; 2026 Color Image System Project. Extension: .cid
+</footer>
+
+</body>
+</html>
